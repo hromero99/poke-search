@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useState } from "react"
 
 /*
@@ -15,7 +16,8 @@ export const PokemonCardComponent = (props) => {
     const [pokemonInformation, setPokemonInformation] = useState(null)
     const [isInformationLoaded, setIsInformationLoaded] = useState(false)
 
-    if (!isInformationLoaded) { //!false cuando comienza mi componente, es decir, cuando se monta
+    useEffect(() => {
+
         fetch(props.url).then((response) => {
 
             response.json().then((data) => {
@@ -25,7 +27,7 @@ export const PokemonCardComponent = (props) => {
                 setIsInformationLoaded(true)
             })
         })
-    }
+    },[props])
 
     console.log(pokemonInformation)
     return <article>
