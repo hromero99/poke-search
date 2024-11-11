@@ -1,12 +1,11 @@
 import { useState } from "react";
 import "./app.css";
-import { NavBarComponent } from "./components/NavBar/navbarComponent";
-import { PokemonCardComponent } from "./components/PokemonCardComponent";
-import { PokemonSearchComponent } from "./components/pokemonSearchComponent";
+import { PokemonCardComponent } from "../../components/PokemonCardComponent";
+import { PokemonSearchComponent } from "../../components/pokemonSearchComponent";
 import { useEffect } from "react";
 
 
-export const App = () => {
+export const HomePage = () => {
 
   const [apiData, setApiData] = useState(null)
   const [apiUrlPage, setApiUrlPage] = useState("https://pokeapi.co/api/v2/pokemon")
@@ -38,7 +37,6 @@ export const App = () => {
   return (
     <> {/* React.Fragment  o Fragment */}
       <header className="header">
-        <NavBarComponent />
         <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" />
         <h1>The RESTful Pokémon API</h1>
         <h2> Serving over 2.5 billion API calls each month!</h2>
@@ -63,5 +61,4 @@ export const App = () => {
     </>
   )
 }
-
 
