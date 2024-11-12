@@ -19,17 +19,41 @@ export const PokemonCardComponent = (props) => {
 
     useEffect(() => {
 
-        fetch(props.url).then((response) => {
+        if (props.url) {
+            setIsInformationLoaded(false)
+            fetch(props.url).then((response) => {
 
-            response.json().then((data) => {
-                console.log(data)
-                // Como aqui uso los set del useState mi componente se actualiza para poder mostrar la nueva informacion
-                setPokemonInformation(data)
-                setIsInformationLoaded(true)
+                response.json().then((data) => {
+                    console.log(data)
+                    // Como aqui uso los set del useState mi componente se actualiza para poder mostrar la nueva informacion
+                    setPokemonInformation(data)
+                    setIsInformationLoaded(true)
+                })
             })
-        })
-    },[props])
+        }
 
+        if (props.isFavoritePokemon){
+            console.log(props)
+            setPokemonInformation(props.favoritePokemonInformation)
+            setIsInformationLoaded(true)
+        }
+    }, [props])
+
+    console.log(pokemonInformation)
+
+    const addPokemonToFavoriteButton = () => {
+        const currentPokemonListInLocalStorage = localStorage.getItem("pokemonList")
+        if (currentPokemonListInLocalStorage === null) {
+            let pokemonInformationInString = JSON.stringify([pokemonInformation])
+            localStorage.setItem("pokemonList", pokemonInformationInString)
+        } else {
+            const currentPokemonList = JSON.parse(currentPokemonListInLocalStorage)
+            currentPokemonList.push(pokemonInformation)
+            localStorage.setItem("pokemonList", JSON.stringify(currentPokemonList))
+        }
+
+    }
+    
     console.log(pokemonInformation)
     return <article>
         {isInformationLoaded === true ? <>
@@ -37,7 +61,10 @@ export const PokemonCardComponent = (props) => {
             <img src={pokemonInformation.sprites.back_default} />
             <img src={pokemonInformation.sprites.front_default} />
             <h4>{props.name}</h4>
-            <NavLink to={`/pokemon/${pokemonInformation.id}`}>Más información</NavLink></> : <p>Loading</p>}
+            <NavLink to={`/pokemon/${pokemonInformation.id}`}>Más información</NavLink>
+            {props.isFavoritePokemon ? <></> : <button onClick={addPokemonToFavoriteButton}>Agregar Favorito</button>}
+        </> : <p>Loading</p>}
+
 
     </article>
 
